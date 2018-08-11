@@ -1,0 +1,16 @@
+@import '~antd/dist/antd.css';
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+#root {
+  display: flex;
+}
+
+.home {
+  margin: auto;
+  font-size: 50px;
+  color: #000;
+}
