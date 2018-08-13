@@ -14,3 +14,37 @@ html, body, #root {
   font-size: 50px;
   color: #000;
 }
+
+.header {
+  background: #fff;
+  padding: 0;
+}
+
+.search-bar {
+  width: 80%;
+}
+
+.search-bar-wrapper {
+  width: 80%;
+  display: inline-flex;
+  justify-content: center;
+}
+
+
+.logo {
+  margin-right: 5px;
+  margin-bottom: 5px;
+  width: 200px;
+  text-align: center;
+  display: inline-block;
+}
+
+.ad {
+  display: inline-block;
+  margin: 10px;
+}
+
+.ant-pagination {
+  text-align: center;
+  margin-top: 20px;
+}

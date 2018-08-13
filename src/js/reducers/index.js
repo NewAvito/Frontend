@@ -2,11 +2,13 @@
 import { combineReducers } from 'redux';
 
 import userReducer from './userReducer';
-import uiReducer from './uiReducer';
+import adsReducer from './adsReducer';
+import categoriesReducer from './categoriesReducer';
 
 let reducer = combineReducers({
   user: userReducer,
-  ui: uiReducer
+  ads: adsReducer,
+  categories: categoriesReducer
 });
 
 export default reducer;
