@@ -48,3 +48,10 @@ html, body, #root {
   text-align: center;
   margin-top: 20px;
 }
+.item{
+  display: flex;
+  flex-direction: column;
+}
+.addItemDiv{
+  margin: auto;
+}
