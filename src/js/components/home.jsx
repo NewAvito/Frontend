@@ -6,17 +6,33 @@ const { Header, Footer, Sider, Content } = Layout;
 
 import Categories from './categories.jsx';
 import Ads from './ads.jsx';
-import SearchBar from './search-bar.jsx';
-import Logo from './logo.jsx';
+import Navbar from './navbar.jsx';
 
 
 export default class Home extends Component {
+
+  constructor() {
+    super();
+
+    this.state = {
+      current: 1,
+    }
+
+    this.onChange = this.onChange.bind(this);
+  }
+
+  onChange(page) {
+    console.log(page);
+    this.setState({
+      current: page,
+    });
+  }
+
   render() {
     return (
       <Layout>
         <Header className='header'>
-          <Logo />
-          <SearchBar />
+          <Navbar />
         </Header>
         <Layout>
           <Sider theme='light'>
@@ -24,7 +40,7 @@ export default class Home extends Component {
           </Sider>
           <Content>
             <Ads />
-            <Pagination defaultCurrent={1} total={100} />
+            <Pagination current={this.state.current} onChange={this.onChange} total={50} />;
           </Content>
         </Layout>
       </Layout> 

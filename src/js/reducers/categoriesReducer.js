@@ -1,6 +1,7 @@
 'use strict'
 let initialState = {
   list: [
+    {id: 'all', name: 'All'},
     {id: 'personal-effect', name: 'Personal effect'},
     {id: 'hobby', name: 'Hobby'},
     {id: 'home-and-garden', name: 'Home & Garden'},

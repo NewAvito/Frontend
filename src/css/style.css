@@ -21,15 +21,20 @@ html, body, #root {
 }
 
 .search-bar {
-  width: 80%;
+  width: 50%;
+  margin-left: 50px;
+}
+
+.loading-spin {
+  margin: auto;
 }
 
 .search-bar-wrapper {
-  width: 80%;
-  display: inline-flex;
-  justify-content: center;
 }
 
+.ant-menu-item {
+  float: right !important;
+}
 
 .logo {
   margin-right: 5px;
@@ -37,7 +42,9 @@ html, body, #root {
   width: 200px;
   text-align: center;
   display: inline-block;
+  float: left !important;
 }
+
 
 .ad {
   display: inline-block;
@@ -47,4 +54,9 @@ html, body, #root {
 .ant-pagination {
   text-align: center;
   margin-top: 20px;
+}
+
+.login-form, 
+.reg-form {
+  margin: auto
 }
