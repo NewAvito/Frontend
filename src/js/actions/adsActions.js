@@ -4,18 +4,21 @@ import firebase from '../containers/firebase';
 export function fetchAds(page) {
   return (dispatch, getState) => {
     let { category } = getState().ads;
-    let ads = firebase.database().ref('ads').orderByChild('category').equalTo('test1');
-
-    if (category === 'all') {
-      ads.once('value', (snapshot) => {
-        console.log(snapshot.val())
-        snapshot.forEach((snapshot) => {
-          console.log(snapshot.val());
-        })
+    console.log('category', category);
+    let ads = firebase.database().ref('ads').orderByChild('category');
+    
+    if (category !== 'all') {
+      ads = ads.equalTo(category);
+    } 
+    ads.once('value', (snapshot) => {
+      console.log(snapshot.val())
+      let adds = [];
+      snapshot.forEach((snapshot) => {
+        console.log(snapshot.val());
+        adds.push(snapshot.val());
       });
-    } else {
-
-    }
+      dispatch(fetchItemsSuccess(adds));
+    })
   }
 }
 
@@ -24,6 +27,13 @@ export function addItem(item) {
     let newAdd = firebase.database().ref('ads').push();
     newAdd.set(item);
     console.log('item set');
+  }
+}
+
+export function fetchItemsSuccess(items) {
+  return {
+    type: 'FETCH_ITEMS_SUCCESS',
+    items
   }
 }
 

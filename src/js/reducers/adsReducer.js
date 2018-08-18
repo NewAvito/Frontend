@@ -13,6 +13,8 @@ const adsReducer = (state=initialState, action) => {
   case 'CHANGE_CATEGORY': 
     state = {...state, category: action.category};
     break;
+  case 'FETCH_ITEMS_SUCCESS':
+    state = {...state, list: action.items};
   }
   return state;
 };
