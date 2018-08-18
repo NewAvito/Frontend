@@ -1,93 +1,14 @@
-// import React, { Component } from 'react';
-// import store from '../containers/store';
-
-// store.subscribe(() => {
-// 	console.log('It is work!', store.getState())
-// })
-// store.dispatch({ type: 'ADD_INFO', payload: 'лол кек' })
-
-// export default class Item extends Component {
-
-//   render() {
-//     return (
-//       <div className='item'>
-//       	<span>Название объявления</span>
-//       	<input type='text' className='titleText' />
-//       	<span>Описание</span>
-//       	<input type='text' className='descText' />
-//       	<span>Ваше имя</span>
-//       	<input type='text' className='nameText' />
-//       	<span>Номер телефона</span>
-//       	<input type='text' className='numberText' />
-//       	<span>Регион, город</span>
-//       	<input type='text' className='cityText' />
-//       	<span>Метро(если есть)</span>
-//       	<input type='text' className='metroText' />
-//       	<span>Категория</span>
-//       	<input type='text' className='categoryText' />
-//       </div>
-//     )
-//   }
-// }
-
 import { Form, Menu, message, Dropdown, Input, Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete } from 'antd';
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
-import store from '../containers/store';
+import { connect } from 'react-redux';
 
-store.subscribe(() => {
-  console.log('It is work!', store.getState())
-});
-
-store.dispatch({ type: 'ADD_INFO', payload: 'лол кек' });
+import { addItem } from '../actions/adsActions';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 const AutoCompleteOption = AutoComplete.Option;
 
-
-
-const residences = [{
-  value: 'zhejiang',
-  label: 'Zhejiang',
-  children: [{
-    value: 'hangzhou',
-    label: 'Hangzhou',
-    children: [{
-      value: 'xihu',
-      label: 'West Lake',
-    }],
-  }],
-}, {
-  value: 'jiangsu',
-  label: 'Jiangsu',
-  children: [{
-    value: 'nanjing',
-    label: 'Nanjing',
-    children: [{
-      value: 'zhonghuamen',
-      label: 'Zhong Hua Men',
-    }],
-  }],
-}];
-
-    function handleMenuClick(e) {
-      message.info('Click on menu item.');
-      console.log('click', e);
-  }
-
-  const menu = (props) => {
-    console.log(props)
-    return (
-     <Menu onClick={handleMenuClick}>
-      {props.categories.list.map(nameCategories => (
-        <Menu.Item key={nameCategories.id}><Icon type="user" />{nameCategories.name}</Menu.Item>
-        ))}
-    </Menu>
-    )
-  };
-
-@connect(mapStateToProps)
+@connect(mapStateToProps, mapDispatchToProps)
 class RegistrationForm extends React.Component {
   constructor(props) {
     super(props);
@@ -95,51 +16,33 @@ class RegistrationForm extends React.Component {
       confirmDirty: false,
       autoCompleteResult: [],
     };
+
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleSubmit (e) {
     e.preventDefault();
-    this.props.form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values);
+    this.props.form.validateFields((err, values) => {
+      if (err) {
+        return console.log(err);
       }
+      console.log('Received values of form: ', values);
+      let newObj = {};
+      for (var key in values) {
+        if (values.hasOwnProperty(key)) {
+          if (values[key]) {
+            newObj[key] = values[key];
+          }
+        }
+      }
+
+      this.props.addItem(newObj);
     });
-  }
-
-  handleConfirmBlur (e)  {
-    const value = e.target.value;
-    this.setState({ confirmDirty: this.state.confirmDirty || !!value });
-  }
-
-  compareToFirstPassword (rule, value, callback)  {
-    const form = this.props.form;
-    if (value && value !== form.getFieldValue('password')) {
-      callback('Two passwords that you enter is inconsistent!');
-    } else {
-      callback();
-    }
-  }
-
-  validateToNextPassword (rule, value, callback) {
-    const form = this.props.form;
-    if (value && this.state.confirmDirty) {
-      form.validateFields(['confirm'], { force: true });
-    }
-    callback();
-  }
-
-  handleWebsiteChange (value)  {
-    let autoCompleteResult;
-    if (!value) {
-      autoCompleteResult = [];
-    } else {
-      autoCompleteResult = ['.com', '.org', '.net'].map(domain => `${value}${domain}`);
-    }
-    this.setState({ autoCompleteResult });
   }
 
   render() {
     const { getFieldDecorator } = this.props.form;
+    const { categories } = this.props;
     const { autoCompleteResult } = this.state;
 
     const formItemLayout = {
@@ -165,11 +68,10 @@ class RegistrationForm extends React.Component {
       },
     };
     const prefixSelector = getFieldDecorator('prefix', {
-      initialValue: '86',
+      initialValue: '+7',
     })(
       <Select style={{ width: 70 }}>
-        <Option value="86">+7</Option>
-        <Option value="87">+87</Option>
+        <Option value="+7">+7</Option>
       </Select>
     );
 
@@ -178,10 +80,10 @@ class RegistrationForm extends React.Component {
     ));
 
     return (
-      <Form onSubmit={this.handleSubmit}>
+      <Form className='add-form' onSubmit={this.handleSubmit}>
         <FormItem
             {...formItemLayout}
-            label="Название"
+            label="Title"
           >
           {getFieldDecorator('title', {
           
@@ -191,35 +93,59 @@ class RegistrationForm extends React.Component {
         </FormItem>
        <FormItem
           {...formItemLayout}
-          label="Описание"
+          label="Description"
         >
+        {getFieldDecorator('description', {
+          
+        })(
             <Input />
-        </FormItem>
-        <FormItem {...formItemLayout}
-        label='Категория'>
-          <Dropdown overlay={menu(this.props)}>
-            <Button style={{ width: 250 }}>
-              Выбрать категорию <Icon type="down" />
-            </Button>
-        </Dropdown>
+        )}
         </FormItem>
         <FormItem
           {...formItemLayout}
-          label="Имя"
+          label="Category"
         >
-            <Input />
+          {getFieldDecorator('category', {
+            rules: [{ required: true, message: 'Please select category!' }],
+          })(
+            <Select>
+            {
+              categories.map((category) => {
+                return <Option key={category.id} value={category.id}>{category.name}</Option>
+              })
+            }
+            </Select>
+          )}
         </FormItem>
         <FormItem
           {...formItemLayout}
-          label="Город"
+          label="Name"
         >
+        {getFieldDecorator('name', {
+          
+        })(
             <Input />
+        )}
         </FormItem>
         <FormItem
           {...formItemLayout}
-          label="Метро(если есть)"
+          label="City"
         >
+        {getFieldDecorator('city', {
+          
+        })(
             <Input />
+        )}
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
+          label="Subway(если есть)"
+        >
+        {getFieldDecorator('subway', {
+          
+        })(
+            <Input />
+        )}
         </FormItem>
         <FormItem
           {...formItemLayout}
@@ -232,23 +158,24 @@ class RegistrationForm extends React.Component {
           )}
         </FormItem>
         <FormItem {...tailFormItemLayout}>
-          {getFieldDecorator('agreement', {
-            valuePropName: 'checked',
-          })(
-            <Checkbox>I have read the <a href="">agreement</a></Checkbox>
-          )}
-        </FormItem>
-        <FormItem {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit">Register</Button>
+          <Button type="primary" htmlType="submit">Add</Button>
         </FormItem>
       </Form>
     );
   }
 }
 
-function mapStateToProps (state) {
+function mapStateToProps({ categories }) {
   return {
-    categories: state.categories
+    categories: categories.list
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    addItem: (item) => {
+      dispatch(addItem(item))
+    }
   }
 }
 

@@ -19,6 +19,14 @@ export function fetchAds(page) {
   }
 }
 
+export function addItem(item) {
+  return (dispatch, getState) => {
+    let newAdd = firebase.database().ref('ads').push();
+    newAdd.set(item);
+    console.log('item set');
+  }
+}
+
 export function changeCategory(category) {
   return {
     type: 'CHANGE_CATEGORY',
