@@ -9,6 +9,7 @@ import Home from './components/home.jsx';
 import AddItemForm from './components/add-item.jsx';
 import LoginForm from './components/login-form.jsx';
 import RegisterForm from './components/register-form.jsx';
+import CardPicture from './components/cardPicture.jsx';
 import { checkLogged } from './actions/userActions';
 import { history } from './containers/store';
 
@@ -33,6 +34,7 @@ export default class Router extends Component {
           <Route exact path='/' component={Home} />
           <Route path='/login' component={LoginForm} />
           <Route path='/register' component={RegisterForm} />
+          <Route path='/item' component={CardPicture} />
         </Switch>
       </ConnectedRouter> 
     )

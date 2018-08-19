@@ -67,3 +67,12 @@ html, body, #root {
 .reg-form {
   margin: auto
 }
+.itemItem{
+  display: flex;
+  flex-direction: row;
+}
+.textBlock{
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
