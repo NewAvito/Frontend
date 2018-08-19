@@ -64,6 +64,7 @@ html, body, #root {
 }
 
 .login-form, 
+.add-form,
 .reg-form {
   margin: auto
 }
