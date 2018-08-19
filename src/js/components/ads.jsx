@@ -34,7 +34,7 @@ export default class Home extends Component {
 function mapStateToProps({ ads }) {
   return {
     ads: ads.list,
-    page: 0,
+    page: ads.page,
     category: ads.category
   }
 }

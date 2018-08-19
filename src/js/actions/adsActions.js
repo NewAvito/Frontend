@@ -1,10 +1,33 @@
 import firebase from '../containers/firebase';
 import axios from 'axios';
+import { push } from 'connected-react-router';
 
+
+export function setPages(pages) {
+  return {
+    type: 'SET_PAGES',
+    pages
+  }
+}
+
+export function changePage(page) {
+  return {
+    type: 'CHANGE_PAGE',
+    page
+  }
+}
+
+export function changeCurrent(item) {
+  console.log('changing current 2');
+  return {
+    type: 'CHANGE_CURRENT',
+    item
+  } 
+}
 
 export function fetchAds(page) {
   return (dispatch, getState) => {
-    let { category } = getState().ads;
+    let { category, page } = getState().ads;
     let { query } = getState().search;
     console.log('category', category);
     let ads = firebase.database().ref('ads').orderByChild('category');
@@ -12,6 +35,7 @@ export function fetchAds(page) {
     if (category !== 'all') {
       ads = ads.equalTo(category);
     } 
+
     ads.once('value', (snapshot) => {
       console.log(snapshot.val())
       let adds = [];
@@ -21,6 +45,8 @@ export function fetchAds(page) {
         console.log(add);
         adds.push(add);
       });
+      dispatch(setPages(adds.length));
+      adds = adds.slice((page - 1) * 10, (page - 1) * 10 + 10);
       dispatch(fetchItemsSuccess(adds));
     })
   }
@@ -31,6 +57,7 @@ export function addItem(item) {
     let newAdd = firebase.database().ref('ads').push();
     newAdd.set(item);
     console.log('item set');
+    dispatch(push('/'));
   }
 }
 

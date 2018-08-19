@@ -32,7 +32,7 @@ class RegistrationForm extends React.Component {
         return console.log(err);
       }
       console.log('Received values of form: ', values);
-      let newObj = {url: this.state.avatarURL};
+      let newObj = {image: this.state.avatarURL};
       for (var key in values) {
         if (values.hasOwnProperty(key)) {
           if (values[key]) {
@@ -125,7 +125,7 @@ class RegistrationForm extends React.Component {
             <Select>
             {
               categories.map((category) => {
-                return <Option key={category.category} value={category.category}>{category.category}</Option>
+                return <Option key={category.id} value={category.id}>{category.name}</Option>
               })
             }
             </Select>
@@ -135,7 +135,17 @@ class RegistrationForm extends React.Component {
           {...formItemLayout}
           label="Name"
         >
-        {getFieldDecorator('username', {
+        {getFieldDecorator('name', {
+          
+        })(
+            <Input />
+        )}
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
+          label="Цена"
+        >
+        {getFieldDecorator('price', {
           
         })(
             <Input />
@@ -153,19 +163,9 @@ class RegistrationForm extends React.Component {
         </FormItem>
         <FormItem
           {...formItemLayout}
-          label="Price"
-        >
-        {getFieldDecorator('cost', {
-          
-        })(
-            <Input />
-        )}
-        </FormItem>
-        <FormItem
-          {...formItemLayout}
           label="Номер телефона"
         >
-          {getFieldDecorator('numphone', {
+          {getFieldDecorator('phone', {
             rules: [{ required: true, message: 'Please input your phone number!' }],
           })(
             <Input style={{ width: '100%' }} />

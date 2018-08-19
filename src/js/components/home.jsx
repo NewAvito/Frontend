@@ -7,25 +7,20 @@ const { Header, Footer, Sider, Content } = Layout;
 import Categories from './categories.jsx';
 import Ads from './ads.jsx';
 import Navbar from './navbar.jsx';
+import { changePage } from '../actions/adsActions.js';
 
-
+@connect(mapStateToProps, mapDispatchToProps)
 export default class Home extends Component {
 
   constructor() {
     super();
-
-    this.state = {
-      current: 1,
-    }
 
     this.onChange = this.onChange.bind(this);
   }
 
   onChange(page) {
     console.log(page);
-    this.setState({
-      current: page,
-    });
+    this.props.changePage(page);
   }
 
   render() {
@@ -40,10 +35,25 @@ export default class Home extends Component {
           </Sider>
           <Content>
             <Ads />
-            <Pagination current={this.state.current} onChange={this.onChange} total={50} />;
+            <Pagination current={this.props.page} onChange={this.onChange} total={this.props.pages} />;
           </Content>
         </Layout>
       </Layout> 
     )
+  }
+}
+
+function mapStateToProps({ ads }) {
+  return {
+    page: ads.page,
+    pages: ads.pages
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    changePage: (page) => {
+      dispatch(changePage(page));
+    }
   }
 }
