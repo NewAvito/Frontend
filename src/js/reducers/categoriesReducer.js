@@ -1,17 +1,17 @@
 'use strict'
 let initialState = {
   list: [
-    {id: 'all', name: 'All'},
-    {id: 'personal-effect', name: 'Personal effect'},
-    {id: 'hobby', name: 'Hobby'},
-    {id: 'home-and-garden', name: 'Home & Garden'},
-    {id: 'consumer-electronics', name: 'Consumer Electronics'}, 
-    {id: 'service', name: 'Service'},
-    {id: 'work', name: 'Work'},
-    {id: 'realty', name: 'Realty'},
-    {id: 'sporting-goods', name: 'Sporting goods'},
-    {id: 'motors', name: 'Motors'},
-    {id: 'animals', name: 'Animals'}, 
+    {category:"Without category"},
+    {category:"Apartament"},
+    {category:"Appliances"},
+    {category:"Auto"},
+    {category:"Clothes"},
+    {category:"Game console"},
+    {category:"Land"},
+    {category:"Mobile phones"},
+    {category:"Motocicle"},
+    {category:"PC"},
+    {category:"Work"}
   ]
 };
 

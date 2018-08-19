@@ -1,9 +1,11 @@
 import firebase from '../containers/firebase';
+import axios from 'axios';
 
 
 export function fetchAds(page) {
   return (dispatch, getState) => {
     let { category } = getState().ads;
+    let { query } = getState().search;
     console.log('category', category);
     let ads = firebase.database().ref('ads').orderByChild('category');
     
@@ -14,8 +16,10 @@ export function fetchAds(page) {
       console.log(snapshot.val())
       let adds = [];
       snapshot.forEach((snapshot) => {
-        console.log(snapshot.val());
-        adds.push(snapshot.val());
+        let add = snapshot.val();
+        if (query && !add.title.includes(query)) return;
+        console.log(add);
+        adds.push(add);
       });
       dispatch(fetchItemsSuccess(adds));
     })

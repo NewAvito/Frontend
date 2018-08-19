@@ -27,10 +27,10 @@ export default class Categories extends Component {
         {
           this.props.categories.map((category, index) => (
             <Menu.Item 
-              onClick={() => this.props.changeCategory(category.id)}
+              onClick={() => this.props.changeCategory(category.category)}
               key={index}
             >
-              {category.name}
+              {category.category}
             </Menu.Item>
           ))
         }
