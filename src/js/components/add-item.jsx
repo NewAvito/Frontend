@@ -1,6 +1,8 @@
 import { Form, Menu, message, Dropdown, Input, Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete } from 'antd';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import firebase from '../containers/firebase.js';
+import FileUploader from "react-firebase-file-uploader";
 
 import { addItem } from '../actions/adsActions';
 
@@ -13,11 +15,14 @@ class RegistrationForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      confirmDirty: false,
-      autoCompleteResult: [],
+      avatarURL: ''
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleUploadStart = this.handleUploadStart.bind(this);
+    this.handleProgress = this.handleProgress.bind(this);
+    this.handleUploadError = this.handleUploadError.bind(this);
+    this.handleUploadSuccess = this.handleUploadSuccess.bind(this);
   }
 
   handleSubmit (e) {
@@ -27,7 +32,7 @@ class RegistrationForm extends React.Component {
         return console.log(err);
       }
       console.log('Received values of form: ', values);
-      let newObj = {};
+      let newObj = {image: this.state.avatarURL};
       for (var key in values) {
         if (values.hasOwnProperty(key)) {
           if (values[key]) {
@@ -39,6 +44,26 @@ class RegistrationForm extends React.Component {
       this.props.addItem(newObj);
     });
   }
+
+  handleUploadStart() { this.setState({ isUploading: true, progress: 0 }) };
+  handleProgress (progress) {this.setState({ progress })};
+  handleUploadError(error) {
+    this.setState({ isUploading: false });
+    console.error(error);
+  };
+
+  handleUploadSuccess(filename) {
+    this.setState({ avatar: filename, progress: 100, isUploading: false });
+    firebase
+      .storage()
+      .ref("images")
+      .child(filename)
+      .getDownloadURL()
+      .then(url => {
+        console.log(url);
+        this.setState({ avatarURL: url })
+      });
+  };
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -74,10 +99,6 @@ class RegistrationForm extends React.Component {
         <Option value="+7">+7</Option>
       </Select>
     );
-
-    const websiteOptions = autoCompleteResult.map(website => (
-      <AutoCompleteOption key={website}>{website}</AutoCompleteOption>
-    ));
 
     return (
       <Form className='add-form' onSubmit={this.handleSubmit}>
@@ -156,6 +177,24 @@ class RegistrationForm extends React.Component {
           })(
             <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
           )}
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
+          label='image'
+        >
+          <FileUploader
+            accept="image/*"
+            name="avatar"
+            randomizeFilename
+            storageRef={firebase.storage().ref("images")}
+
+            onUploadStart={this.handleUploadStart}
+            onUploadError={this.handleUploadError}
+            onUploadSuccess={this.handleUploadSuccess}
+            onProgress={this.handleProgress}
+          />
+          {this.state.isUploading && <p>Progress: {this.state.progress}</p>}
+          {this.state.avatarURL && <img src={this.state.avatarURL} />}
         </FormItem>
         <FormItem {...tailFormItemLayout}>
           <Button type="primary" htmlType="submit">Add</Button>
