@@ -150,6 +150,16 @@ class RegistrationForm extends React.Component {
         </FormItem>
         <FormItem
           {...formItemLayout}
+          label="Цена"
+        >
+        {getFieldDecorator('price', {
+          
+        })(
+            <Input />
+        )}
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
           label="City"
         >
         {getFieldDecorator('city', {
