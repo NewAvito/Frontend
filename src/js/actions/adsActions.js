@@ -5,18 +5,24 @@ import { push } from 'connected-react-router';
 export function fetchAds(page) {
   return (dispatch, getState) => {
     let { category } = getState().ads;
-    let ads = firebase.database().ref('ads').orderByChild('category').equalTo('test1');
-
-    if (category === 'all') {
-      ads.once('value', (snapshot) => {
-        console.log(snapshot.val())
-        snapshot.forEach((snapshot) => {
-          console.log(snapshot.val());
-        })
+    let { query } = getState().search;
+    console.log('category', category);
+    let ads = firebase.database().ref('ads').orderByChild('category');
+    
+    if (category !== 'all') {
+      ads = ads.equalTo(category);
+    } 
+    ads.once('value', (snapshot) => {
+      console.log(snapshot.val())
+      let adds = [];
+      snapshot.forEach((snapshot) => {
+        let add = snapshot.val();
+        if (query && !add.title.includes(query)) return;
+        console.log(add);
+        adds.push(add);
       });
-    } else {
-
-    }
+      dispatch(fetchItemsSuccess(adds));
+    })
   }
 }
 
@@ -26,6 +32,13 @@ export function addItem(item) {
     newAdd.set(item);
     console.log('item set');
     dispatch(push('/'));
+  }
+}
+
+export function fetchItemsSuccess(items) {
+  return {
+    type: 'FETCH_ITEMS_SUCCESS',
+    items
   }
 }
 

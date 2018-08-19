@@ -11,7 +11,7 @@ const Ad = (props) => (
       style={{ width: 300 }}
       className='ad'
       hoverable
-      cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}
+      cover={<img alt="example" src={props.image ? props.image : null} />}
       actions={[<Icon type="heart" />]}
     >
       <Meta

@@ -10,12 +10,20 @@ export default class Home extends Component {
   componentDidMount() {
     this.props.fetchAds();
   }
+  componentDidUpdate(prevProps) {
+    console.log(this.props.category);
+    console.log(prevProps.category);
+    if (this.props.category !== prevProps.category || this.props.page !== prevProps.page) {
+      console.log('fetch');
+      this.props.fetchAds();
+    }
+  }
   render() {
     return (
       <div className='ads-list'>
       {
         this.props.ads.map((ad) => (
-          <Ad {...ad} key={ad.id} />
+          <Ad {...ad} key={Math.random()} />
         ))
       } 
       </div>
@@ -26,7 +34,8 @@ export default class Home extends Component {
 function mapStateToProps({ ads }) {
   return {
     ads: ads.list,
-    page: 0
+    page: 0,
+    category: ads.category
   }
 }
 
