@@ -143,7 +143,7 @@ class RegistrationForm extends React.Component {
         </FormItem>
         <FormItem
           {...formItemLayout}
-          label="Цена"
+          label="Price"
         >
         {getFieldDecorator('price', {
           
@@ -163,7 +163,7 @@ class RegistrationForm extends React.Component {
         </FormItem>
         <FormItem
           {...formItemLayout}
-          label="Номер телефона"
+          label="Phone number"
         >
           {getFieldDecorator('phone', {
             rules: [{ required: true, message: 'Please input your phone number!' }],
