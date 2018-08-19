@@ -41,7 +41,7 @@ export function fetchAds(page) {
       let adds = [];
       snapshot.forEach((snapshot) => {
         let add = snapshot.val();
-        if (query && !add.title.includes(query)) return;
+        if (query && !add.title.toLowerCase().includes(query.toLowerCase())) return;
         console.log(add);
         adds.push(add);
       });

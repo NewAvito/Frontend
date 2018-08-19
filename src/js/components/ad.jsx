@@ -21,6 +21,8 @@ const Ad = (props) => (
         title={props.title}
         description={props.description}
       />
+
+      {props.price ? <span>Price: {props.price}</span> : null}
     </Card>
   </Link>
 );

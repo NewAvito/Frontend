@@ -187,7 +187,7 @@ class RegistrationForm extends React.Component {
             onProgress={this.handleProgress}
           />
           {this.state.isUploading && <p>Progress: {this.state.progress}</p>}
-          {this.state.avatarURL && <img src={this.state.avatarURL} />}
+          {this.state.avatarURL && <p>Uploaded</p>}
         </FormItem>
         <FormItem {...tailFormItemLayout}>
           <Button type="primary" htmlType="submit">Add</Button>
