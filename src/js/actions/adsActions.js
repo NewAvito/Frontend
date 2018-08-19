@@ -1,4 +1,5 @@
 import firebase from '../containers/firebase';
+import { push } from 'connected-react-router';
 
 
 export function fetchAds(page) {
@@ -24,6 +25,7 @@ export function addItem(item) {
     let newAdd = firebase.database().ref('ads').push();
     newAdd.set(item);
     console.log('item set');
+    dispatch(push('/'));
   }
 }
 
